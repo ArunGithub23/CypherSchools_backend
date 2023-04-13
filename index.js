@@ -17,7 +17,7 @@ app.use(express.json());
 //const router = require('./routes/register');
 // Use the login and register routes as middleware//
 //app.use('/register', router);
-app.post('/', async (req, res) => {
+app.post('/register', async (req, res) => {
     try {
       const { firstName, lastName, email, password } = req.body;
       // Check if user with same email already exists
@@ -64,13 +64,43 @@ app.post('/', async (req, res) => {
       if (!isMatch) {
         return res.status(400).json({ message: 'Invalid email or password' });
       }
-      res.json({ message: 'User logged in successfully' });
+      res.status(200).json(user);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error logging in user' });
     }
   });
   
+// get endpoint by using _id
+
+app.get('/profile/:id', async (req, res) => {
+  const _id=req.params.id;
+  try {
+    const user = await User.findOne({_id});
+    console.log(user)
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({message:"Error !!!"});
+  }
+ 
+});
+
+// Endpoint for updating user's about
+app.put('/about/:id',async(req,res)=>{
+  const _id=req.params.id;
+  const about=req.body.about;
+  try {
+    const user=await User.findByIdAndUpdate({_id},{about},{new:true})
+    console.log(user)
+    res.status(200);
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).json({message:"error"})
+  }
+})
+
+
   
   // Endpoint for updating user profile details
   app.put('/profile', async (req, res) => {
@@ -109,6 +139,21 @@ app.post('/', async (req, res) => {
       res.status(500).json({ message: 'Error updating user password' });
     }
   });
+
+  //Endpoint to updata the weblinks
+
+  app.put('/weblinks/:id',async(req,res)=>{
+    const _id=req.params.id;
+    const links=req.body.links;
+    try {
+      const user=await User.findByIdAndUpdate({_id},{links},{new:true})
+      console.log(user)
+      res.status(200).json(user.links);
+    } catch (error) {
+      console.log(error.message)
+      res.status(400).json({message:"error"})
+    }
+  })
   
   
   

@@ -1,4 +1,4 @@
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 require('../config/dbcon.js');
 
 
@@ -6,26 +6,46 @@ const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true
-  },
+             },
   lastName: {
     type: String,
     required: true
-  },
+            },
   email: {
     type: String,
     required: true,
     unique: true
-  },
+           },
   password: {
     type: String,
     required: true
-  },
+            },
+  about: {
+    type: String
+          },
   image: {
     type: String
+       },
+  links: {
+               linkedIn: {
+                  type: String
+                },
+                github: {
+                  type: String
+                },
+                facebook: {
+                  type: String
+                },
+                twitter: {
+                  type: String
+                },
+                instagram: {
+                  type: String
+                },
+                website: {
+                  type: String
+                }
   },
-  links: [{
-    type: String
-  }],
   followers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
@@ -34,4 +54,4 @@ const userSchema = new mongoose.Schema({
 
 
 
-module.exports=mongoose.model("User",userSchema);
+module.exports = mongoose.model("User", userSchema);
